@@ -1,0 +1,21 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install beautifulsoup4 lxml tkinterdnd2 pyinstaller
+      - run: pyinstaller --noconfirm --clean --onefile --windowed --name HTML-to-Markdown html_to_markdown.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HTML-to-Markdown-exe
+          path: dist/HTML-to-Markdown.exe
